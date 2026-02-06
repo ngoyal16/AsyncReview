@@ -1,6 +1,7 @@
 """Shared configuration loaded from .env"""
 
 import os
+import json
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -27,6 +28,15 @@ REVIEWS_DIR = CR_CACHE_DIR / "reviews"
 # GitHub API configuration (Part 2)
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "")
 GITHUB_API_BASE = os.getenv("GITHUB_API_BASE", "https://api.github.com")
+
+# GitLab API configuration
+GITLAB_TOKEN = os.getenv("GITLAB_TOKEN", "")
+_gitlab_tokens_json = os.getenv("GITLAB_TOKENS_JSON", "{}")
+try:
+    GITLAB_TOKENS = json.loads(_gitlab_tokens_json)
+except json.JSONDecodeError:
+    print(f"Warning: Invalid JSON in GITLAB_TOKENS_JSON: {_gitlab_tokens_json}")
+    GITLAB_TOKENS = {}
 
 # API Server configuration
 API_HOST = os.getenv("API_HOST", "127.0.0.1")
@@ -137,4 +147,3 @@ PRIORITY_PATTERNS = [
     "test/**",
     "spec/**",
 ]
-

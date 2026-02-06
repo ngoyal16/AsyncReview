@@ -111,7 +111,7 @@ function App() {
     setError(null)
 
     try {
-      const response = await fetch('/api/github/load_pr', {
+      const response = await fetch('/api/pr/load', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prUrl }),
@@ -191,7 +191,7 @@ function App() {
           <input
             type="text"
             className="url-input"
-            placeholder="Enter GitHub PR URL..."
+            placeholder="Enter GitHub PR or GitLab MR URL..."
             value={prUrl}
             onChange={e => setPrUrl(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && loadPR()}

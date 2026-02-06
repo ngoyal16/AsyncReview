@@ -12,11 +12,11 @@ from sse_starlette.sse import EventSourceResponse
 from .config import API_HOST, API_PORT
 from .diff_rlm import FastAutoReview, DiffQARLM
 from .diff_types import DiffFileContext, DiffSelection, FileContents, RLMIteration
-from .github import get_cached_pr, get_file_contents, load_pr
+from .pr_manager import get_cached_pr, get_file_contents, load_pr
 
 app = FastAPI(
     title="CR Review API",
-    description="API for GitHub PR code review with Gemini RLM",
+    description="API for PR code review with Gemini RLM (GitHub/GitLab)",
     version="0.1.0",
 )
 
@@ -107,9 +107,9 @@ class SuggestionResponse(BaseModel):
 
 
 # Endpoints
-@app.post("/api/github/load_pr", response_model=LoadPRResponse)
+@app.post("/api/pr/load", response_model=LoadPRResponse)
 async def api_load_pr(request: LoadPRRequest):
-    """Load a GitHub PR for review."""
+    """Load a PR (GitHub or GitLab) for review."""
     try:
         pr_info = await load_pr(request.prUrl)
         return LoadPRResponse(**pr_info.to_dict())
@@ -119,7 +119,7 @@ async def api_load_pr(request: LoadPRRequest):
         raise HTTPException(status_code=500, detail=f"Failed to load PR: {e}")
 
 
-@app.get("/api/github/file", response_model=FileContentsResponse)
+@app.get("/api/file", response_model=FileContentsResponse)
 async def api_get_file(
     reviewId: str = Query(..., description="Review ID from load_pr"),
     path: str = Query(..., description="File path"),
@@ -341,4 +341,3 @@ def run_server():
     """Run the FastAPI server."""
     import uvicorn
     uvicorn.run(app, host=API_HOST, port=API_PORT)
-
