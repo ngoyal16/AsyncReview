@@ -109,7 +109,7 @@ export function DiffViewerComponent({
 
       try {
         const response = await fetch(
-          `/api/github/file?reviewId=${encodeURIComponent(prInfo.reviewId)}&path=${encodeURIComponent(selectedFilePath)}`
+          `/api/file?reviewId=${encodeURIComponent(prInfo.reviewId)}&path=${encodeURIComponent(selectedFilePath)}`
         )
 
         if (!response.ok) {
@@ -342,7 +342,7 @@ export function DiffViewerComponent({
     return (
       <div className="diff-placeholder">
         <img src="/asyncfunc.png" alt="AsyncFunc Logo" className="diff-placeholder-logo" />
-        Enter a GitHub PR URL and start instant Code Review.
+        Enter a GitHub PR or GitLab MR URL and start instant Code Review.
       </div>
     )
   }

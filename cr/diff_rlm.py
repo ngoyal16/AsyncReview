@@ -25,7 +25,7 @@ from .diff_types import (
     ReviewIssue,
     RLMIteration,
 )
-from .github import get_cached_pr, get_file_contents
+from .pr_manager import get_cached_pr, get_file_contents
 from .rlm_runner import build_deno_command
 
 
